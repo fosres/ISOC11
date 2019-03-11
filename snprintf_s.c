@@ -25,7 +25,10 @@ int snprintf_s(char * restrict s, rsize_t n,
 	{
 		fprintf(stderr,"snprintf_s: Error: format is NULL!\n");
 
-		violation_present = -1;
+		s[0] = '\0';
+
+		return -1;
+
 	}
 
 	if ( n == 0 )
@@ -51,34 +54,9 @@ int snprintf_s(char * restrict s, rsize_t n,
 		violation_present = -1;	
 	}
 	
-#if 0
-	while ( ( string_flag = ( strstr( string_flag,"%s" ) ) ) != NULL )
-	{
-		num_var_string_args++;
 
-		string_flag += strnlen_s("%s",2);	
-	}
-#endif
+//#if 0
 
-#if 0
-	va_list var_arg;
-
-//	va_list var_arg_copy;
-
-	va_start(var_arg,format);
-
-	va_copy(var_arg_copy,var_arg);
-
-	vsnprintf(s,n,format,var_arg);
-
-	for ( size_t i = 0; i < num_var_string_args ; i++ )
-	{
-		if ( va_arg( var_arg, char * ) == NULL )
-		{ violation_present = -1; }
-	}
-	
-	va_end(var_arg);	
-#endif
 
 		va_list var_arg;
 
@@ -92,7 +70,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 		const char * restrict s_flag = format;
 
-		while ( ( s_flag = strstr(s_flag,"%s") ) != NULL )
+		while ( ( *s_flag != '\0' ) && ( ( s_flag = strstr(s_flag,"%s") ) != NULL ) )
 		{
 			if ( va_arg(var_arg,char *) == NULL )
 			{ violation_present = -1; break; }
@@ -100,6 +78,8 @@ int snprintf_s(char * restrict s, rsize_t n,
 			s_flag += strnlen_s("%s",2);
 		}
 
+		va_end(var_arg);
+//#endif
 	if ( ( violation_present == -1 )
 
 		&&
@@ -126,7 +106,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 	else if ( violation_present == -1 )
 	{ 	return violation_present; }
 
-	else // No runtime-constraint violations found
+	else // No runtime-constraint violations found so far
 	{
 #if 0			
 		va_list var_arg;
@@ -144,10 +124,12 @@ int snprintf_s(char * restrict s, rsize_t n,
 		while ( ( s_flag = strstr(s_flag,"%s") ) != NULL )
 		{
 			if ( va_arg(var_arg,char *) == NULL )
-			{ violation_present = -1; break; }
+			{ s[0] = '\0'; return -1; }
 
 			s_flag += strnlen_s("%s",2);
 		}
+
+		va_end(var_arg);
 
 #endif
 
@@ -155,7 +137,9 @@ int snprintf_s(char * restrict s, rsize_t n,
  Check if any of the variable args is a NULL pointer here
 #endif
 
-		violation_present = vsnprintf(s,n,format,var_arg_copy);
+		va_start(var_arg_copy,format);	
+	 
+	 	violation_present = vsnprintf(s,n,format,var_arg_copy);
 #if 0
 		va_start(var_arg_copy,num_var_string_args);
 		
