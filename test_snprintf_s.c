@@ -4,6 +4,8 @@
 
 #define MAXSIZE 1024
 
+#define TEST_SIZE 5
+
 int main(int argc, char ** argv)
 {
 	static char s1[MAXSIZE];
@@ -85,6 +87,21 @@ s1 with the string it had before s1[0] was = NULL.
 	return_value = snprintf_s(s1,MAXSIZE,"%s %s %s",argv[1],argv[2],NULL);
 
 	printf("Return Value: %d String s1: %s\n\n",return_value, s1);
+
+	printf("Does snprintf_s truncate the string filled in s"
+		"\n when contents of format string exceed s's"
+		"\n capacity?\n\n"
+	      );
+
+	return_value = snprintf_s(s2,TEST_SIZE,"%s",argv[1]);
+
+	printf("Return Value: %d String s2: %s\n\n",return_value, s2);
+
+	printf("Is null char appended at end of s for previous test case"
+		" \"diodes\"?\n\n"
+	      );
+
+	printf("s2[5] == %u\n\n",s2[5]);
 
 	return 0;
 }
