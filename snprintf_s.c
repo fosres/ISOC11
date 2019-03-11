@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdint.h>
 
 int snprintf_s(char * restrict s, rsize_t n, 
 		const char * restrict format,
@@ -52,7 +54,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 	
 	size_t num_var_string_args = 0;
 
-	char * string_flag = format;
+	const char * string_flag = format;
 
 	while ( ( string_flag = ( strstr( string_flag,"%s" ) ) ) != NULL )
 	{
@@ -101,7 +103,70 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 	else // No runtime-constraint violations found
 	{
-		snprintf( s, n, format, ...);
+			
+
+		va_start(var_arg,num_var_string_args);
+		
+		const rsize_t count = 0;
+
+		char * restrict s_p = &s[0];
+
+		char const * restrict s_end = s + n;
+
+		const char * restrict format_p = format;
+
+		const char * restrict format_zero = &format[0];
+
+		char const * restrict format_end = format + count;
+
+
+		char * current_var_arg = NULL;
+
+		while ( 
+			
+			( s_p < s_end )
+
+			&&
+
+			( format_p < format_end )
+
+			&&
+
+			( *format_p != '\0' )
+
+		     
+		      )
+		{
+			
+			if (  	( i < num_var_string_args ) 
+					
+				&& 
+				
+				( abs( strstr(format_p,"%s") - format_p ) == 0  )
+			   )
+
+			{
+				
+				current_var_arg = va_arg( var_arg, char * ); 	
+				
+				count = n - strnlen_s(s,n) - 1;	
+				
+				strncat_s( s,n,current_var_arg,count );
+
+				s_p += count;	
+
+				format_p += strnlen_s("%s",2);
+				
+				i++;
+
+				continue;
+			}
+			
+			*s_p++ = *format_p++;
+
+		}	
+
+		va_end(var_arg);	
 
 		return 0;	
 	}

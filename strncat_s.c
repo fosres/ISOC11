@@ -147,7 +147,7 @@ Bug found: Testcase r3 from C11 N1570 Draft for strncat_s fails
 
 		char * restrict s1catp = &s1[strnlen_s(s1,s1max)];
 
-		char * restrict s2scanp = s2;	
+		const char * restrict s2scanp = s2;	
 
 		while ( ( i < n ) && ( *s2scanp != '\0') )
 		{ *s1catp++ = *s2scanp++; i++;}
