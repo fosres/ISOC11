@@ -116,9 +116,11 @@ objects=$( ls *.o )
 
 '
 
-objects=$( ls *.o )
+cd ISOC11/
 
-cd ${PREVIOUS}
+gcc -c *.c
+
+objects=$(ls *.o)
 
 unameOut="$(uname -s)"
 
@@ -135,13 +137,13 @@ esac
 
 if [[ ${machine} == *"Linux"* ]]
 then
-	ar -r /usr/lib/libc.a ${PREVIOUS}/${objects}
+	ar -r /usr/lib/libc.a ${objects}
 elif [[ ${machine} == *"Cygwin"* ]]
 then
-	ar -r /usr/lib/libcygwin.a ${PREVIOUS}/${objects}
+	ar -r /usr/lib/libcygwin.a ${objects}
 elif [[ ${machine} == *"Mac"* ]]
 then
-	ar -r /usr/lib/libc.a ${PREVIOUS}/${objects}
+	ar -r /usr/lib/libc.a ${objects}
 fi
 
 #Including declaration of snprintf_s
@@ -149,3 +151,6 @@ fi
 cd /usr/include
 
 sed -i '/sprintf (c/a int snprintf_s (char * restrict s, rsize_t n, const char * restrict format, ...);' stdio.h
+
+
+
