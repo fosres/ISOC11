@@ -26,12 +26,11 @@ int snprintf_s(char * restrict s, rsize_t n,
 		fprintf(stderr,"Error: format is NULL!\n");
 
 		violation_present = -1;
-
 	}
 
 	if ( n == 0 )
 	{
-		fprintf(stderr,"Error: n is less than zero!\n");
+		fprintf(stderr,"Error: n is equal to zero!\n");
 		
 		return -1;
 	}	
@@ -39,22 +38,19 @@ int snprintf_s(char * restrict s, rsize_t n,
 	if ( n > RSIZE_MAX )
 	{
 		fprintf(stderr,"Error: n is larger than RSIZE_MAX!\n");
-
+		
 		return -1;
 	}
 
 	if ( strstr(format,"%n") != NULL )
 	{
-		fprintf(stderr,"Error: Cannot use a \%n symbol in"
+		fprintf(stderr,"Error: Cannot use a %%n symbol in"
 			       " the format string!\n"
 		       );	      
 
 		violation_present = -1;	
 	}
 	
-	size_t num_var_string_args = 0;
-
-	const char * string_flag = format;
 #if 0
 	while ( ( string_flag = ( strstr( string_flag,"%s" ) ) ) != NULL )
 	{
@@ -78,11 +74,31 @@ int snprintf_s(char * restrict s, rsize_t n,
 	for ( size_t i = 0; i < num_var_string_args ; i++ )
 	{
 		if ( va_arg( var_arg, char * ) == NULL )
-		{ violation_present = 1; }
+		{ violation_present = -1; }
 	}
 	
 	va_end(var_arg);	
 #endif
+
+		va_list var_arg;
+
+		va_list var_arg_copy;
+
+		va_start(var_arg,format);
+
+		va_copy(var_arg_copy,var_arg);
+
+		const char * restrict format_p = format;
+
+		const char * restrict s_flag = format;
+
+		while ( ( s_flag = strstr(s_flag,"%s") ) != NULL )
+		{
+			if ( va_arg(var_arg,char *) == NULL )
+			{ violation_present = -1; break; }
+
+			s_flag += strnlen_s("%s",2);
+		}
 
 	if ( ( violation_present == -1 )
 
@@ -96,7 +112,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 		&&
 
-		( n < RSIZE_MAX )
+		( n <= RSIZE_MAX )
 
 	   )
 	
@@ -112,16 +128,35 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 	else // No runtime-constraint violations found
 	{
-			
+#if 0			
 		va_list var_arg;
 
-//		va_list var_arg_copy;
+		va_list var_arg_copy;
 
 		va_start(var_arg,format);
 
-//		va_copy(var_arg_copy,var_arg);
+		va_copy(var_arg_copy,var_arg);
 
-		vsnprintf(s,n,format,var_arg);
+		const char * restrict format_p = format;
+
+		const char * restrict s_flag = format;
+
+		while ( ( s_flag = strstr(s_flag,"%s") ) != NULL )
+		{
+			if ( va_arg(var_arg,char *) == NULL )
+			{ violation_present = -1; break; }
+
+			s_flag += strnlen_s("%s",2);
+		}
+
+#endif
+
+#if 0
+ Check if any of the variable args is a NULL pointer here
+#endif
+
+
+		violation_present = vsnprintf(s,n,format,var_arg_copy);
 #if 0
 		va_start(var_arg_copy,num_var_string_args);
 		
@@ -188,7 +223,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 		va_end(var_arg_copy);	
 #endif
-		return 0;	
+		return violation_present;	
 	}
 
 
