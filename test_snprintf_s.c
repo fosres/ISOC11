@@ -76,6 +76,8 @@ s1 with the string it had before s1[0] was = NULL.
 
 	printf("Return Value: %d String s1: %s\n\n",return_value, s1);
 
+	snprintf_s(s1,MAXSIZE,"%s %s",argv[1],argv[2]);
+
 	printf("Does snprintf_s return -1 and leave s1 empty when"
 		" a %%s argument points to a NULL char *?\n\n"
 	      );
