@@ -55,17 +55,25 @@ int snprintf_s(char * restrict s, rsize_t n,
 	size_t num_var_string_args = 0;
 
 	const char * string_flag = format;
-
+#if 0
 	while ( ( string_flag = ( strstr( string_flag,"%s" ) ) ) != NULL )
 	{
 		num_var_string_args++;
 
 		string_flag += strnlen_s("%s",2);	
 	}
+#endif
 
+#if 0
 	va_list var_arg;
 
-	va_start(var_arg,num_var_string_args);
+//	va_list var_arg_copy;
+
+	va_start(var_arg,format);
+
+	va_copy(var_arg_copy,var_arg);
+
+	vsnprintf(s,n,format,var_arg);
 
 	for ( size_t i = 0; i < num_var_string_args ; i++ )
 	{
@@ -74,7 +82,8 @@ int snprintf_s(char * restrict s, rsize_t n,
 	}
 	
 	va_end(var_arg);	
-	
+#endif
+
 	if ( ( violation_present == -1 )
 
 		&&
@@ -104,10 +113,21 @@ int snprintf_s(char * restrict s, rsize_t n,
 	else // No runtime-constraint violations found
 	{
 			
+		va_list var_arg;
 
-		va_start(var_arg,num_var_string_args);
+//		va_list var_arg_copy;
+
+		va_start(var_arg,format);
+
+//		va_copy(var_arg_copy,var_arg);
+
+		vsnprintf(s,n,format,var_arg);
+#if 0
+		va_start(var_arg_copy,num_var_string_args);
 		
-		const rsize_t count = 0;
+		rsize_t count = 0;
+
+		rsize_t i = 0;
 
 		char * restrict s_p = &s[0];
 
@@ -147,7 +167,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 			{
 				
-				current_var_arg = va_arg( var_arg, char * ); 	
+				current_var_arg = va_arg( var_arg_copy, char * ); 	
 				
 				count = n - strnlen_s(s,n) - 1;	
 				
@@ -166,8 +186,8 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 		}	
 
-		va_end(var_arg);	
-
+		va_end(var_arg_copy);	
+#endif
 		return 0;	
 	}
 
