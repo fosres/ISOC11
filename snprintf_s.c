@@ -14,7 +14,7 @@ int snprintf_s(char * restrict s, rsize_t n,
 	
 	if ( s == NULL )
 	{ 
-		fprintf(stderr,"Error: s is NULL!\n");
+		fprintf(stderr,"snprintf_s: Error: s is NULL!\n");
 
 		return -1;
 	
@@ -23,28 +23,28 @@ int snprintf_s(char * restrict s, rsize_t n,
 
 	if ( format == NULL )
 	{
-		fprintf(stderr,"Error: format is NULL!\n");
+		fprintf(stderr,"snprintf_s: Error: format is NULL!\n");
 
 		violation_present = -1;
 	}
 
 	if ( n == 0 )
 	{
-		fprintf(stderr,"Error: n is equal to zero!\n");
+		fprintf(stderr,"snprintf_s: Error: n is equal to zero!\n");
 		
 		return -1;
 	}	
 
 	if ( n > RSIZE_MAX )
 	{
-		fprintf(stderr,"Error: n is larger than RSIZE_MAX!\n");
+		fprintf(stderr,"snprintf_s: Error: n is larger than RSIZE_MAX!\n");
 		
 		return -1;
 	}
 
 	if ( strstr(format,"%n") != NULL )
 	{
-		fprintf(stderr,"Error: Cannot use a %%n symbol in"
+		fprintf(stderr,"snprintf_s: Error: Cannot use a %%n symbol in"
 			       " the format string!\n"
 		       );	      
 
@@ -154,7 +154,6 @@ int snprintf_s(char * restrict s, rsize_t n,
 #if 0
  Check if any of the variable args is a NULL pointer here
 #endif
-
 
 		violation_present = vsnprintf(s,n,format,var_arg_copy);
 #if 0
