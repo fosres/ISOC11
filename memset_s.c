@@ -22,6 +22,15 @@ errno_t memset_s(void *s,rsize_t smax, int c, rsize_t n)
 		violation_present = 1;
 	}
 
+	if ( n > smax )
+	{
+		fprintf(stderr,"memset_s: Warning: rsize_t n > rsize_t smax!\n");	
+
+		violation_present = 1;
+
+
+	}
+
 	if ( smax > RSIZE_MAX )
 	{
 		fprintf(stderr,"memset_s: Error: rsize_t smax > RSIZE_MAX!\n");

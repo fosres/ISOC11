@@ -86,7 +86,25 @@ int main(void)
 	printf("Return Value: %llu\n\n",result);
 
 	printf("test string set with memset_s for first four char\n" 
-		"elements in a char array of 8 elements:\n%s\n",
+		"elements in a char array of 8 elements:\n%s\n\n",
+		test
+	      );
+
+	printf("Does memset_s only set the first smax values when\n"
+		"rsize_t n > rsize_t smax?\n\n"
+	      );
+
+	for ( rsize_t i = 0; i < ARRAY_SIZE; i++)
+	{
+		test[i] = '\0';
+
+	}
+	
+	result = memset_s(test,8*sizeof(char),84,8*sizeof(char)+1);
+
+	printf("Return Value: %llu\n\n",result);
+
+	printf("test string below:\n%s", 
 		test
 	      );
 		
