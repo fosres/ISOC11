@@ -63,11 +63,32 @@ int main(void)
 		"nonzero value?\n\n"
 	      );
 
-	result = memset_s(test,8*sizeof(char),1,RSIZE_MAX+1);
+	result = memset_s(test,8*sizeof(char),84,RSIZE_MAX+1);
 
 	printf("Return Value: %llu\n\n",result);
 
 	printf("test string set with memset_s:\n%s\n",test);
+
+	for ( rsize_t i = 0; i < ARRAY_SIZE; i++)
+	{
+		test[i] = '\0';
+
+	}
+	
+	printf("Does memset_s correctly set the inputted char value\n"
+		"into each of the first n characters of the object\n"
+		"pointed to by void *s when there is NO runtime\n"
+		"constraint violation?\n\n"
+	      );
+
+	result = memset_s(test,8*sizeof(char),84,4*sizeof(char));
+
+	printf("Return Value: %llu\n\n",result);
+
+	printf("test string set with memset_s for first four char\n" 
+		"elements in a char array of 8 elements:\n%s\n",
+		test
+	      );
 		
 	return 0;
 }
