@@ -102,6 +102,10 @@ sed -i '/strlen (c/a size_t strnlen_s (const char * s,size_t maxsize);' string.h
 
 sed -i '/strcat (c/a errno_t strncat_s (char * restrict s1, rsize_t s1max, const char * restrict s2, rsize_t n);' string.h
 
+#Including declaration of snprintf_s
+
+sed -i '/sprintf (c/a int snprintf_s (char * restrict s, rsize_t n, const char * restrict format, ...);' stdio.h
+
 cd ${PREVIOUS}
 
 git clone https://github.com/tanveerasalim/ISOC11.git
@@ -146,11 +150,8 @@ then
 	ar -r /usr/lib/libc.a ${objects}
 fi
 
-#Including declaration of snprintf_s
 
-cd /usr/include
 
-sed -i '/sprintf (c/a int snprintf_s (char * restrict s, rsize_t n, const char * restrict format, ...);' stdio.h
 
 
 
