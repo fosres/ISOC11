@@ -106,6 +106,8 @@ sed -i '/strcat (c/a errno_t strncat_s (char * restrict s1, rsize_t s1max, const
 
 sed -i '/sprintf (c/a int snprintf_s (char * restrict s, rsize_t n, const char * restrict format, ...);' stdio.h
 
+sed -i '/memset (v/a errno_t memset_s(void *s,rsize_t smax,int c,rsize_t n);' string.h
+
 cd ${PREVIOUS}
 
 git clone https://github.com/tanveerasalim/ISOC11.git
@@ -120,9 +122,11 @@ objects=$( ls *.o )
 
 '
 
-cd ISOC11/
+cd ISOC11/std_11_functions/
 
 gcc -c *.c
+
+rm test*.o
 
 objects=$(ls *.o)
 
@@ -132,6 +136,7 @@ case "${unameOut}" in
 	Linux*)		machine=Linux;;
 	Darwin*)	machine=Mac;;
 	CYGWIN*)	machine=Cygwin;;
+	*BSD)		machine=BSD;;
 	*)		machine="UNKNOWN:${unameOut}"
 esac	
 
@@ -146,6 +151,9 @@ elif [[ ${machine} == *"Cygwin"* ]]
 then
 	ar -r /usr/lib/libcygwin.a ${objects}
 elif [[ ${machine} == *"Mac"* ]]
+then
+	ar -r /usr/lib/libc.a ${objects}
+elif [[ ${machine} == *"BSD"* ]]
 then
 	ar -r /usr/lib/libc.a ${objects}
 fi
