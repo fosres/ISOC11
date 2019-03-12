@@ -37,7 +37,7 @@ int main(void)
 		"violations in an invocation of memset_s.\n\n"
 	      );
 
-	static struct addrinfo test[ARRAY_SIZE];
+	static char test[ARRAY_SIZE];
 
 	printf("Does memset_s return nonzero value when void * s"
 		" == NULL?\n\n"
@@ -63,9 +63,11 @@ int main(void)
 		"nonzero value?\n\n"
 	      );
 
-	result = memset_s(test,8*sizeof(struct addrinfo),1,RSIZE_MAX+1);
+	result = memset_s(test,8*sizeof(char),1,RSIZE_MAX+1);
 
 	printf("Return Value: %llu\n\n",result);
+
+	printf("test string set with memset_s:\n%s\n",test);
 		
 	return 0;
 }
