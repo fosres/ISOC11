@@ -1,0 +1,79 @@
+
+strnlen_s.o:     file format pe-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <strnlen_s>:
+   0:	55                   	push   %rbp
+   1:	48 89 e5             	mov    %rsp,%rbp
+   4:	48 83 ec 10          	sub    $0x10,%rsp
+   8:	48 89 4d 10          	mov    %rcx,0x10(%rbp)
+   c:	48 89 55 18          	mov    %rdx,0x18(%rbp)
+  10:	48 83 7d 10 00       	cmpq   $0x0,0x10(%rbp)
+  15:	75 07                	jne    1e <strnlen_s+0x1e>
+  17:	b8 00 00 00 00       	mov    $0x0,%eax
+  1c:	eb 2f                	jmp    4d <strnlen_s+0x4d>
+  1e:	48 c7 45 f8 00 00 00 	movq   $0x0,-0x8(%rbp)
+  25:	00 
+  26:	eb 05                	jmp    2d <strnlen_s+0x2d>
+  28:	48 83 45 f8 01       	addq   $0x1,-0x8(%rbp)
+  2d:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+  31:	48 3b 45 18          	cmp    0x18(%rbp),%rax
+  35:	73 12                	jae    49 <strnlen_s+0x49>
+  37:	48 8b 55 10          	mov    0x10(%rbp),%rdx
+  3b:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+  3f:	48 01 d0             	add    %rdx,%rax
+  42:	0f b6 00             	movzbl (%rax),%eax
+  45:	84 c0                	test   %al,%al
+  47:	75 df                	jne    28 <strnlen_s+0x28>
+  49:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+  4d:	48 83 c4 10          	add    $0x10,%rsp
+  51:	5d                   	pop    %rbp
+  52:	c3                   	retq   
+  53:	90                   	nop
+  54:	90                   	nop
+  55:	90                   	nop
+  56:	90                   	nop
+  57:	90                   	nop
+  58:	90                   	nop
+  59:	90                   	nop
+  5a:	90                   	nop
+  5b:	90                   	nop
+  5c:	90                   	nop
+  5d:	90                   	nop
+  5e:	90                   	nop
+  5f:	90                   	nop
+
+Disassembly of section .xdata:
+
+0000000000000000 <.xdata>:
+   0:	01 08                	add    %ecx,(%rax)
+   2:	03 05 08 12 04 03    	add    0x3041208(%rip),%eax        # 3041210 <.xdata+0x3041210>
+   8:	01 50 00             	add    %edx,0x0(%rax)
+	...
+
+Disassembly of section .pdata:
+
+0000000000000000 <.pdata>:
+   0:	00 00                	add    %al,(%rax)
+   2:	00 00                	add    %al,(%rax)
+   4:	53                   	push   %rbx
+   5:	00 00                	add    %al,(%rax)
+   7:	00 00                	add    %al,(%rax)
+   9:	00 00                	add    %al,(%rax)
+	...
+
+Disassembly of section .rdata$zzz:
+
+0000000000000000 <.rdata$zzz>:
+   0:	47                   	rex.RXB
+   1:	43                   	rex.XB
+   2:	43 3a 20             	rex.XB cmp (%r8),%spl
+   5:	28 47 4e             	sub    %al,0x4e(%rdi)
+   8:	55                   	push   %rbp
+   9:	29 20                	sub    %esp,(%rax)
+   b:	37                   	(bad)  
+   c:	2e 34 2e             	cs xor $0x2e,%al
+   f:	30 00                	xor    %al,(%rax)
+	...

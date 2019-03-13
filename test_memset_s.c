@@ -129,7 +129,22 @@ int main(void)
 	printf("node_two->val == %d\n\n",node_two->val);
 
 	printf("node_two->val in Hexadecimal format == 0x%x\n\n",node_two->val);
-	
+
+	printf("Does memset_s properly overwrite data for any object that was"
+		"already initialized? The test case attempts to overwrite\n"
+		"node_two's data fields by zeroing it.\n"
+	      );
+
+	result = memset_s(node_two,sizeof(Node),0,sizeof(Node));
+
+	printf("Return Value: %llu\n\n",result);
+
+	printf("node_two->link == %p\n",node_two->link);
+
+	printf("node_two->val == %d\n\n",node_two->val);
+
+	printf("node_two->val in Hexadecimal format == 0x%x\n\n",node_two->val);
+		
 	return 0;
 
 }

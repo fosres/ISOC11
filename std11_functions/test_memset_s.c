@@ -1,33 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h> //netdb.h declares struct addrinfo
-#include <arpa/inet.h>
-#include <netinet/in.h>
 
 #define ARRAY_SIZE 8
 
-#if 0
-void print_struct_fields(void * in,const rsize_t n)
+typedef struct Node
 {
 
-	volatile unsigned char * v_p = in;
+	struct Node * link;
 
-	rsize_t i = 0;
+	int val;
 
-	while ( i < n )
-	{
-		printf("%c ",*v_p);
+} Node;
 
-		v_p++;	
-
-		i++;
-	}	
-
-}
-#endif
 
 int main(void)
 {
@@ -104,9 +89,62 @@ int main(void)
 
 	printf("Return Value: %llu\n\n",result);
 
-	printf("test string below:\n%s", 
+	printf("test string below:\n%s\n\n", 
 		test
 	      );
+	
+	printf("Does memset_s correctly allocate unsigned chars to objects\n"
+		"that in turn, store other objects, like a struct?\n"
+		"In the example below, a struct Node of a Linked List\n"
+		"is initialized through memset_s\n\n"
+	      );
+
+	
+	Node * node;
+
+	result = memset_s(node,sizeof(Node),0,sizeof(Node));
+
+	printf("Return Value: %llu\n\n",result);
+
+	printf("node->link == %p\n",node->link);
+
+	printf("node->val == %d\n\n",node->val);
+
+	printf("Does memset_s do what was tested previously except that\n"
+		"it initializes with a nonzero unsigned char value? In the\n"
+		"example below, a second struct Node name node_two is\n"
+		"initialized with the unsigned char value 84\n\n"
+	      );
+
+	Node * node_two;
+
+	Node * node_three;
+
+	result = memset_s(node_two,sizeof(Node),84,sizeof(Node));
+		
+	printf("Return Value: %llu\n\n",result);
+
+	printf("node_two->link == %p\n",node_two->link);
+
+	printf("node_two->val == %d\n\n",node_two->val);
+
+	printf("node_two->val in Hexadecimal format == 0x%x\n\n",node_two->val);
+
+	printf("Does memset_s properly overwrite data for any object that was"
+		"already initialized? The test case attempts to overwrite\n"
+		"node_two's data fields by zeroing it.\n"
+	      );
+
+	result = memset_s(node_two,sizeof(Node),0,sizeof(Node));
+
+	printf("Return Value: %llu\n\n",result);
+
+	printf("node_two->link == %p\n",node_two->link);
+
+	printf("node_two->val == %d\n\n",node_two->val);
+
+	printf("node_two->val in Hexadecimal format == 0x%x\n\n",node_two->val);
 		
 	return 0;
+
 }
