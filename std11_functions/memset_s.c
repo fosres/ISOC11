@@ -8,57 +8,47 @@ errno_t memset_s(void *s,rsize_t smax, int c, rsize_t n)
 
 	volatile unsigned char * v = s;
 	
-	if ( s == NULL )
-	{
-		fprintf(stderr,"memset_s: Error: void * s == NULL!\n");
+	if ( 	
+		s == NULL 
+	
+		||
+		
+		n > RSIZE_MAX
 
-		return 1;
-	}
+		||
 
-	if ( n > RSIZE_MAX )
+		n > smax
+		
+		||
+
+		smax > RSIZE_MAX		
+	   )
 	{
-		fprintf(stderr,"memset_s: Warning: rsize_t n > RSIZE_MAX!\n");	
 
 		violation_present = 1;
 	}
 
-	if ( n > smax )
-	{
-		fprintf(stderr,"memset_s: Warning: rsize_t n > rsize_t smax!\n");	
-
-		violation_present = 1;
-
-
-	}
-
-	if ( smax > RSIZE_MAX )
-	{
-		fprintf(stderr,"memset_s: Error: rsize_t smax > RSIZE_MAX!\n");
-
-		return 1;
-	}
-
-	volatile unsigned char * v_p = &v[0];
 
 	rsize_t i = 0;
 
-	if ( violation_present == 1 ) // && (s != NULL) && (smax <= RSIZE_MAX) )
+	if ( ( violation_present == 1 ) && ( s != NULL ) && ( smax <= RSIZE_MAX ) )
 	{
 
 		i = 0;
 
-		while ( i < smax )
+		while ( i++ < smax )
 		{
-			*v_p++ = (unsigned char)c; 
+			*v++ = (unsigned char)c; 
 
-			i++;
 		}	
 		
-//		memset(s,(unsigned char)c,smax);	
 		
 		return violation_present;
 
 	}
+
+	else if ( violation_present )
+	{ 	return violation_present; }
 		
 	
 	else // no runtime-constraint violation found		
@@ -66,14 +56,12 @@ errno_t memset_s(void *s,rsize_t smax, int c, rsize_t n)
 		i = 0;
 
 
-		while ( i < n )
+		while ( i++ < n )
 		{
-			*v_p++ = (unsigned char)c;
+			*v++ = (unsigned char)c;
 
-			i++;
 		}
 		
-//		memset(s,(unsigned char)c,n);	
 
 		return violation_present;
 

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 
@@ -13,138 +14,110 @@ typedef struct Node
 
 } Node;
 
+errno_t test_memset_s (char const * msg, unsigned int line, errno_t exp,
+			void *s, rsize_t smax, unsigned char c, rsize_t n)	
+{
+	errno_t test_success = 0;
 
-int main(void)
+	test_success = memset_s(s,smax,c,n);
+
+	if ( test_success == exp )
+	{
+		return test_success;
+	}
+
+	else
+	{
+		fprintf(stderr,"%u: %s",line,msg);	
+		return 1;
+	}
+
+
+}
+
+
+
+int main (void)
 {
 	errno_t result = 0;	
-	
-	printf("This program only checks for runtime-constraint\n"
-		"violations in an invocation of memset_s.\n\n"
-	      );
 
 	static char test[ARRAY_SIZE];
 
-	printf("Does memset_s return nonzero value when void * s"
-		" == NULL?\n\n"
-	      );
+	result = test_memset_s("memset_s fails to zero all elements in void * s"
+			"\n\n",__LINE__,1,(void *)test,sizeof(test),0,
+			sizeof(test)
+		   );
 
-	result = memset_s(NULL,sizeof(test),0,sizeof(test));
-
-	printf("Return Value: %llu\n\n",result);
-
-	printf("Does memset_s return nonzero value when smax >"
-		" RSIZE_MAX?\n\n"
-	      );
-
-	result = memset_s(test,RSIZE_MAX+1,0,sizeof(test));
-
-	printf("Return Value: %llu\n\n",result);
 	
-	printf("Does memset_s set the inputted char value into\n"
-		"each of the first smax characters of the object\n"
-		"pointed to by void *s only when there is a\n"
-		"violation and void * s != NULl and when rsize_t\n"
-		"smax is less than or equal to RSIZE_MAX and return\n"
-		"nonzero value?\n\n"
-	      );
+	result = test_memset_s("memset_s fails to return nonzero value when void * s"
+			" == NULL.\n\n",__LINE__,1,NULL,sizeof(test),0,
+			sizeof(test)
+		   );
 
-	result = memset_s(test,8*sizeof(char),84,RSIZE_MAX+1);
+	result = test_memset_s("memset_s fails to return nonzero value when smax >"
+			" RSIZE_MAX\n\n",__LINE__,1,(void *)test,RSIZE_MAX+1,0,
+			sizeof(test)
+		   );
 
-	printf("Return Value: %llu\n\n",result);
-
-	printf("test string set with memset_s:\n%s\n",test);
-
-	for ( rsize_t i = 0; i < ARRAY_SIZE; i++)
-	{
-		test[i] = '\0';
-
-	}
 	
-	printf("Does memset_s correctly set the inputted char value\n"
-		"into each of the first n characters of the object\n"
+	result = test_memset_s("memset_s fails to set the inputted char value into\n"
+				"each of the first smax characters of the object\n"
+				"pointed to by void *s only when there is a:\n"
+				"runtime-constraint violation and\n" 
+				"void * s != NULl and\n" 
+				"when rsize_t\n and \n"
+				"when smax is less than or equal to RSIZE_MAX\n\n",
+			       __LINE__,1,(void *)test,ARRAY_SIZE,84,RSIZE_MAX+1	
+			);
+										
+
+	memset_s(test,ARRAY_SIZE,0,ARRAY_SIZE);
+
+
+	result = test_memset_s("memset_s fails to set the unsigned char value 84\n"
+		"into each of the first 4 characters of the object\n"
 		"pointed to by void *s when there is NO runtime\n"
-		"constraint violation?\n\n"
+		"constraint violation.\n\n",__LINE__,1,(void *)test,ARRAY_SIZE,84,
+		4*sizeof(char)
 	      );
 
-	result = memset_s(test,8*sizeof(char),84,4*sizeof(char));
 
-	printf("Return Value: %llu\n\n",result);
-
-	printf("test string set with memset_s for first four char\n" 
-		"elements in a char array of 8 elements:\n%s\n\n",
-		test
-	      );
-
-	printf("Does memset_s only set the first smax values when\n"
-		"rsize_t n > rsize_t smax?\n\n"
-	      );
-
-	for ( rsize_t i = 0; i < ARRAY_SIZE; i++)
-	{
-		test[i] = '\0';
-
-	}
-	
-	result = memset_s(test,8*sizeof(char),84,8*sizeof(char)+1);
-
-	printf("Return Value: %llu\n\n",result);
-
-	printf("test string below:\n%s\n\n", 
-		test
+	result = test_memset_s("memset_s fails to set the first smax values when\n"
+		"rsize_t n > rsize_t smax.\n\n",__LINE__,1,(void *)test,ARRAY_SIZE,84,
+		ARRAY_SIZE+1
 	      );
 	
-	printf("Does memset_s correctly allocate unsigned chars to objects\n"
-		"that in turn, store other objects, like a struct?\n"
+	memset_s(test,ARRAY_SIZE,0,ARRAY_SIZE);
+
+	Node * node = malloc(sizeof(Node));
+	
+	result = test_memset_s("memset_s fails to allocate 0 to objects\n"
+		"that in turn, store other objects, like a struct.\n"
 		"In the example below, a struct Node of a Linked List\n"
-		"is initialized through memset_s\n\n"
+		"is initialized through memset_s\n\n",__LINE__,1,(void *)node,sizeof(Node),
+		0,sizeof(Node)
 	      );
 
+
+	printf("node->link == %p\n",node->link);
+
+	printf("node->val == %d\n\n",node->val);
 	
-	Node * node;
+	result = test_memset_s("memset_s fails to allocate nonzero unsigned char values to\n"
+		"objects that store other objects, like a stuct.\n"
+		"It initializes with a nonzero unsigned char value. In the\n"
+		"example below, a second struct Node name node_two is\n"
+		"initialized with the unsigned char value 84\n\n",__LINE__,1,
+		(void *)node,sizeof(Node),84,sizeof(Node)
+	      );
 
-	result = memset_s(node,sizeof(Node),0,sizeof(Node));
-
-	printf("Return Value: %llu\n\n",result);
 
 	printf("node->link == %p\n",node->link);
 
 	printf("node->val == %d\n\n",node->val);
 
-	printf("Does memset_s do what was tested previously except that\n"
-		"it initializes with a nonzero unsigned char value? In the\n"
-		"example below, a second struct Node name node_two is\n"
-		"initialized with the unsigned char value 84\n\n"
-	      );
-
-	Node * node_two;
-
-	Node * node_three;
-
-	result = memset_s(node_two,sizeof(Node),84,sizeof(Node));
-		
-	printf("Return Value: %llu\n\n",result);
-
-	printf("node_two->link == %p\n",node_two->link);
-
-	printf("node_two->val == %d\n\n",node_two->val);
-
-	printf("node_two->val in Hexadecimal format == 0x%x\n\n",node_two->val);
-
-	printf("Does memset_s properly overwrite data for any object that was"
-		"already initialized? The test case attempts to overwrite\n"
-		"node_two's data fields by zeroing it.\n"
-	      );
-
-	result = memset_s(node_two,sizeof(Node),0,sizeof(Node));
-
-	printf("Return Value: %llu\n\n",result);
-
-	printf("node_two->link == %p\n",node_two->link);
-
-	printf("node_two->val == %d\n\n",node_two->val);
-
-	printf("node_two->val in Hexadecimal format == 0x%x\n\n",node_two->val);
-		
-	return 0;
+	printf("node->val in Hexadecimal format == 0x%x\n\n",node->val);
+	
+	return result;
 
 }
