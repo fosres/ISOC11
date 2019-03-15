@@ -72,27 +72,29 @@ sed -i '$i  #endif\n\n' stdio.h
 
 if [ ! -f /usr/include/stddef.h ]; then
 	touch stddef.h
+	
+	echo "#ifndef __STDDEF_H__" >> stddef.h
+	
+	echo "#endif /* __STDDEF_H__ */" >> stddef.h
+
+	sed -i '$i  #define __STDDEF_H__' stddef.h
+
+	sed -i '$i  #ifndef __size_t_defined' stddef.h
+
+	sed -i '$i  typedef unsigned long int size_t;' stddef.h
+
+	sed -i '$i  #define __size_t_defined 1' stddef.h
+
+	sed -i '$i  #endif' stddef.h
+
+	sed -i '$i #ifndef __rsize_t_defined' stddef.h
+
+	sed -i '$i  typedef size_t rsize_t;' stddef.h
+
+	sed -i '$i  #define __rsize_t_defined 1' stddef.h
+
+	sed -i '$i  #endif\n\n' stddef.h
 fi
-
-echo "#ifndef __STDDEF_H__" >> stddef.h
-
-sed -i '$a  #define __STDDEF_H__' stddef.h
-
-sed -i '$a  #ifndef __size_t_defined' stddef.h
-
-sed -i '$a  typedef unsigned long int size_t;' stddef.h
-
-sed -i '$a  #define __size_t_defined 1' stddef.h
-
-sed -i '$a  #endif\n\n' stddef.h
-
-echo "#ifndef __rsize_t_defined" >> stddef.h
-
-sed -i '$a  typedef size_t rsize_t;' stddef.h
-
-sed -i '$a  #define __rsize_t_defined 1' stddef.h
-
-sed -i '$a  #endif\n\n#endif /* __STDDEF_H__ */' stddef.h
 
 sed -i '$i  #ifdef __RSIZE_MAX__' stdint.h
 
