@@ -4,9 +4,9 @@
 int main(void)
 {
 	rsize_t i = 0;
-	const rsize_t opening = __LINE__+1;	
+	const rsize_t opening = __LINE__+1;
 	char * q [] =
-{
+	{
 "#include <stdio.h>",
 "#include <string.h>",
 "#include <stdint.h>",
@@ -25,7 +25,7 @@ int main(void)
 "	i = 0;",
 "	while ( q[i] != NULL )",
 "	{",
-"		putchar(34);printf(q[i]);putchar(34);putchar(44);putchar(10);",		
+"		putchar(34);printf(q[i]);putchar(34);putchar(44);putchar(10);",
 "	i++;",
 "	}",
 "	i = opening+1;",
@@ -36,7 +36,7 @@ int main(void)
 "	}",
 "	return 0;",
 "}",
-};
+	};
 	while ( i <= opening )
 	{
 		puts(q[i]);
@@ -45,8 +45,8 @@ int main(void)
 	i = 0;
 	while ( q[i] != NULL )
 	{
-		putchar(34);printf(q[i]);putchar(34);putchar(44);putchar(10);		
-		i++;
+		putchar(34);printf(q[i]);putchar(34);putchar(44);putchar(10);
+	i++;
 	}
 	i = opening+1;
 	while ( q[i] != NULL )
@@ -56,4 +56,3 @@ int main(void)
 	}
 	return 0;
 }
-
