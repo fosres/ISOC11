@@ -54,19 +54,19 @@ PREVIOUS=$(pwd)
 
 cd /usr/include
 
-sed -i '/perror/a #ifndef __errno_t_defined' stdio.h
+sed -i '$i  #ifndef __errno_t_defined' stdio.h
 
-sed -i '/__errno_t_defined/a typedef int errno_t;' stdio.h
+sed -i '$i  typedef int errno_t;' stdio.h
 
-sed -i '/typedef int errno_t;/a #define __errno_t_defined 1' stdio.h
+sed -i '$i #define __errno_t_defined 1' stdio.h
 
-sed -i '/__errno_t_defined 1/a #endif\n\n#ifndef __rsize_t_defined' stdio.h
+sed -i '$i  #endif\n\n#ifndef __rsize_t_defined' stdio.h
 
-sed -i '/__rsize_t_defined/a typedef size_t rsize_t;' stdio.h
+sed -i '$i  typedef size_t rsize_t;' stdio.h
 
-sed -i '/rsize_t;/a #define __rsize_t_defined 1' stdio.h
+sed -i '$i  #define __rsize_t_defined 1' stdio.h
 
-sed -i '/__rsize_t_defined 1/a #endif\n\n' stdio.h
+sed -i '$i  #endif\n\n' stdio.h
 
 #Check if file /usr/include/stddef.h exists
 
@@ -76,37 +76,37 @@ fi
 
 echo "#ifndef __STDDEF_H__" >> stddef.h
 
-sed -i '/__STDDEF_H__/a #define __STDDEF_H__' stddef.h
+sed -i '$a  #define __STDDEF_H__' stddef.h
 
-sed -i '/#define/a \n\n#ifndef __size_t_defined' stddef.h
+sed -i '$a  #ifndef __size_t_defined' stddef.h
 
-sed -i '/__size_t_defined/a typedef unsigned long int size_t;' stddef.h
+sed -i '$a  typedef unsigned long int size_t;' stddef.h
 
-sed -i '/typedef/a #define __size_t_defined 1' stddef.h
+sed -i '$a  #define __size_t_defined 1' stddef.h
 
-sed -i '/size_t_defined 1/a #endif\n\n' stddef.h
+sed -i '$a  #endif\n\n' stddef.h
 
 echo "#ifndef __rsize_t_defined" >> stddef.h
 
-sed -i '/__rsize_t_defined/a typedef size_t rsize_t;' stddef.h
+sed -i '$a  typedef size_t rsize_t;' stddef.h
 
-sed -i '/typedef size_t rsize_t;/a #define __rsize_t_defined 1' stddef.h
+sed -i '$a  #define __rsize_t_defined 1' stddef.h
 
-sed -i '/__rsize_t_defined 1/a #endif\n\n#endif /* __STDDEF_H__ */' stddef.h
+sed -i '$a  #endif\n\n#endif /* __STDDEF_H__ */' stddef.h
 
-sed -i '/SIG_ATOMIC_MAX/a \n\n#ifdef __RSIZE_MAX__' stdint.h
+sed -i '$i  #ifdef __RSIZE_MAX__' stdint.h
 
-sed -i '/__RSIZE_MAX__/a #define RSIZE_MAX (__RSIZE_MAX__)\n#else\n\n#define RSIZE_MAX ( (SIZE_MAX ) >> ( 1 ) )\n#endif\n\n' stdint.h
+sed -i '$i  #define RSIZE_MAX (__RSIZE_MAX__)\n#else\n\n#define RSIZE_MAX ( (SIZE_MAX ) >> ( 1 ) )\n#endif\n\n' stdint.h
 
-sed -i '/strlen (c/a size_t strnlen_s (const char * s,size_t maxsize);' string.h
+sed -i '$i  size_t strnlen_s (const char * s,size_t maxsize);' string.h
 
-sed -i '/strcat (c/a errno_t strncat_s (char * restrict s1, rsize_t s1max, const char * restrict s2, rsize_t n);' string.h
+sed -i '$i  errno_t strncat_s (char * restrict s1, rsize_t s1max, const char * restrict s2, rsize_t n);' string.h
 
 #Including declaration of snprintf_s
 
-sed -i '/sprintf (c/a int snprintf_s (char * restrict s, rsize_t n, const char * restrict format, ...);' stdio.h
+sed -i '$i  int snprintf_s (char * restrict s, rsize_t n, const char * restrict format, ...);' stdio.h
 
-sed -i '/memset (v/a errno_t memset_s(void *s,rsize_t smax,int c,rsize_t n);' string.h
+sed -i '$i  errno_t memset_s(void *s,rsize_t smax,int c,rsize_t n);' string.h
 
 cd ${PREVIOUS}
 
@@ -122,6 +122,9 @@ objects=$( ls *.o )
 
 '
 
+#Commenting out everything below
+
+:'
 cd ISOC11/std_11_functions/
 
 gcc -c *.c
@@ -158,7 +161,7 @@ then
 	ar -r /usr/lib/libc.a ${objects}
 fi
 
-
+'
 
 
 
