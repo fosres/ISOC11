@@ -38,14 +38,14 @@ that stores the null char for s1.
 	if ( s1max == 0 )
 	{
 
-		fprintf(stderr,"strncat_s: Error: %d: s1max is 0\n",__LINE__);
+		fprintf(stderr,"strncat_s: Error: s1max is 0\n",__LINE__);
 
 		return 1;
 	}
 
 	if ( s1 == NULL  )
 	{ 
-		fprintf(stderr,"strncat_s: Error: %d: Source string "
+		fprintf(stderr,"strncat_s: Error: Source string "
 				
 				"s1 is NULL!\n",
 				
@@ -65,7 +65,7 @@ that stores the null char for s1.
 	if ( s1max > RSIZE_MAX )
 	{
 	 
-		fprintf(stderr,"strncat_s: Error: %d: s1max is"
+		fprintf(stderr,"strncat_s: Error: s1max is"
 
 				" larger than RSIZE_MAX\n",
 
