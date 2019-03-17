@@ -94,6 +94,14 @@ if [ ! -f /usr/include/stddef.h ]; then
 	sed -i '$i  #define __rsize_t_defined 1' stddef.h
 
 	sed -i '$i  #endif\n\n' stddef.h
+
+	sed -i '$i  #ifndef __ptrdiff_t_defined' stddef.h
+
+	sed -i '$i  typedef signed int ptrdiff_t;' stddef.h
+
+	sed -i '$i  #define __ptrdiff_t_defined 1' stddef.h
+
+	sed -i '$i  #endif' stddef.h
 fi
 
 sed -i '$i  #ifdef __RSIZE_MAX__' stdint.h

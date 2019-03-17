@@ -89,7 +89,13 @@ program is loaded into RAM (after file contents are stored in a FILE struct ), t
 
 file in the hard drive has already been encrypted with an AES-256 bit and RSA-2048 bit hybrid 
 
-cryptosystem. Whatever editor 
+cryptosystem. Whatever editor the person is using will inevitably fail to write the program intime.
+
+NOTE ON SELF-REPLICATION:
+
+One may ask what is the entire purpose of the program, whether in binary or executable, to be self replicating. The answer is that any attempt to modify an encrypted file, even if reversedwith backspaces to look exactly like the original, will render the encrypted file UNENCRYPTABLE. Using editors like vim on an actual encrypted file will render the file impossible to decrypt using the encryption algorithm, even if the vim user reverse any attempt at modication and makes his reversed version look identical to the untampered version!
+
+The self-replicating program can replicate either binary, the source, or both. Depending on write permissions.
 
 
 Security Flaws:
