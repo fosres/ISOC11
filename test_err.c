@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	report_error("Program screams error :D");
+	printf("This should work\n");
 
 	return 0;
 }
