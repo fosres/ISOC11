@@ -72,11 +72,19 @@ of the source code will be placed in separate files, each having the encryption 
 
 next file to be decrypted EXCEPT for the bare minimum amount of software that needs to verify
 
-the git user's credentials and first layer of decryption. Each layer of encryption fo
+the git user's credentials (their gpg2 secret key fingerprint: command line command: gpg2 
 
-and in turn encrypted with randomized RSA-2048 and AES-256 hybrid encryption using successive 
+--keyid-format long --list-secret-keys gpg2.email) and first layer of decryption. Each layer 
 
-layers of randomized secret keys involving. This is similiar to what a polymorphic virus does.
+beyond git credential will decrypt a subset of the functions and code segments (each
+
+individual set randomized each time!!!) until the complete object code of the source file is
+
+recovered. All of these en/decryptions will in turn be encrypted with randomized RSA-2048 and
+
+AES-256 hybrid encryption using successive layers of randomized secret keys involving. This is
+
+similiar to what a polymorphic virus does.
 
 It automatically encrypts when not in use and only the virus can decrypt itself when it needs
 
