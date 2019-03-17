@@ -18,6 +18,10 @@ the same copyright and licensing permissions as this one.
 
 #if 0
 
+The secureness of the software begins in the planning stage before the program even
+
+begins begin written.
+
 Not only does a program like this perform its duty but it also protects
 
 it from being statically and/or dynamically analyzed by unwelcome people.
@@ -75,11 +79,20 @@ the authors, will the program allow both the source and binaries to exist in any
 
 throughout the author's
 
-machine. If the user makes any attempt to compile any modifications of the source code 
+machine. 
 
-implementation, it is completely recognized by the program and is ignored. There is a
+If the user makes any attempt to compile any modifications of the source code 
 
-hash salt embedded in the original program 
+implementation, it is completely recognized by the program and is ignored. As soon as the
+
+program is loaded into RAM (after file contents are stored in a FILE struct ), the original
+
+file in the hard drive has already been encrypted with an AES-256 bit and RSA-2048 bit hybrid 
+
+cryptosystem. Whatever editor 
+
+
+Security Flaws:
 
 This system does have a weakness. If the person is advanced in reverse engineering, they
 
@@ -133,9 +146,25 @@ the git user's credentials (their gpg2 secret key fingerprint: command line comm
 
 beyond git credential will decrypt a subset of the functions and code segments (each
 
-individual set randomized each time!!!) until the complete object code of the source file is
+individual set of functions and segments that are decrypted in sequence randomized each time)
 
-recovered. All of these en/decryptions will in turn be encrypted with randomized RSA-2048 and
+until the complete object code of the source file is
+
+recovered. All of these en/decryptions are encrypted with AES-256 bit standard and each AES 
+
+key is encrypted with randomized RSA-4096 encryption keys set to a random allocated bitstream
+
+in the previously decryted file segment. If there is a lack of sufficient bits in the original
+
+file the program will install randomly generate an encryption surrounded by fake ones and
+
+place the true encryption key in a random location in the binary file. All the bits will be 
+
+data in the program that does nothing. 
+
+A serious polymorphic virus does this to hide its encryption keys. But in this program, the 
+
+program uses this strategy to protect the software from being read by unwelcome intruders.
 
 AES-256 hybrid encryption using successive layers of randomized secret keys involving. This is
 
@@ -157,5 +186,17 @@ static char * pointer to a randomized bitstream signature in the previously decr
 
 To verify that each file is up to date the self replicating encrypting file will check the 
 
-currentmost git tag and verify that the 
+currentmost GPG signature and secret-key RSA key against the hash salts of each that are 
+
+stored in the program ( it does not even matter if the non-author can see the hash salts. 
+		
+There is no way to reverse engineer the real keys from these hash salts as hash salts, being 
+
+hashes, are built upon random prime numbers. For an in-depth discussion of this, see:  
+
+https://www.troyhunt.com/our-password-hashing-has-no-clothes/).
+
+verify the git user's account is the identity of the author's.
+
+
 #endif
