@@ -30,6 +30,7 @@ int main(int argc, char ** argv)
 	stack_bottom = &x;
 	
 	int * d = (int *)malloc(1*sizeof(int));	
+
 	
 	Node * node = (Node *)malloc(1*sizeof(Node));	
 	
