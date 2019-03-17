@@ -6,5 +6,7 @@ int main(void)
 
 	printf("Killzone\n");
 
+	printf("Zippers\n");
+
 	return 0;
 }
