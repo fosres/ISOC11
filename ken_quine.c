@@ -19,45 +19,74 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
+	
+	fseek(in,0L,SEEK_END);
 
-
-	const rsize_t SIZE = fseek(in,0L,SEEK_END);
+	const rsize_t SIZE = ftell(in);
 
 	rewind(in);
-#if 0
+//#if 0	
 	static char * str; 
+
+	static char * s_p;
 	
 	str = (char *)calloc(sizeof(char),SIZE);
-
-	static char * s_p; 
 	
 	s_p = &str[0];
 	
 	fread(str,SIZE,sizeof(char),in);
-#endif
+//#endif
 	char c = 0;
 
-// stores the contents of the source code in hexadecmial
-// Ken Thompson thought of this simple, brilliant idea
+	rewind(in);
+#if 0
+// printing the contents of the source code in hexadecmial directly from file
+// Kenneth Lane Thompson thought of this simple, brilliant idea
+	printf("printing the contents of the source code in hexadecmial directly from file:\n\n");
 
 	printf("char q[] = \n{\n");
 	while ( ( c = fgetc(in) ) != EOF )
 	{
 		printf("0x%x, ",c);	
 	}
-	printf("0x0",stdout);
-	printf("};\n");
+	
+	fprintf(stdout,"0x%x ",0x0,stdout);
+	printf("};\n\n");
+
+	s_p = &str[0];
+//actually printing the contents of the source code in hexadecimal from array
+
+	printf("printing the contents of the source code in hexadecimal from array\n\n");
+
+	
+	printf("char q[] = \n{\n");
+	
+	while ( ( c = *s_p ) != 0x0 )
+	{ 	fprintf(stdout,"0x%x, ",c); s_p++;  }
+	printf("};\n\n");
 
 // prints the contents of the source code in ASCII text:
 
 	rewind(in);
 
-	printf("Printing contents of source in ASCII text:\n\n");
+	printf("Printing contents of source in ASCII text from file:\n\n");
 
 	while ( ( c = fgetc(in) ) != EOF )
 	{
 		fputc(c,stdout);
 	}
+	
+	printf("\n\n");
+
+	s_p = &str[0];
+#endif
+//	printf("Printing contents of source in ASCII text from array:\n\n");
+
+	while ( ( c = *s_p ) != 0x0 )
+	{
+		fputc(c,stdout); s_p++;
+	}
+
 
 	if ( fclose(in) == EOF )
 	{
@@ -66,5 +95,7 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 	
+	free(str);	
+
 	return 0;
 }
