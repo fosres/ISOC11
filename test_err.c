@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	printf("This should work\n");
+	signed int x = 456;
 
 	return 0;
 }

@@ -46,7 +46,13 @@ So this type of program can not only do what the program is supposed to
 
 do, but also encrypts its own source code file after code generation of
 
-the program completes. After the executable code is run, the executable
+the program completes. The executable itself can encrypt itself except for
+
+the bare minimum functionality it needs to decrypt itself when it recognizes the git
+
+credentials of git users that have permission to disassemble or decompile the file. 
+
+After the executable code is run, the executable
 
 will only decrypt the source code file IF AND ONLY IF the computer has
 
@@ -58,7 +64,19 @@ the very last layer! There are several W,X permissions mentioned at the beginnin
 
 article. Below describes their meaning:
 
-1. W^X:
+The program has a tool that generates a brand new, randomized decryption routine
+
+that it embeds in each new copy of the program, belonging to the author or not.
+
+So now two copies of the program never has a fixed key signature nor a fixed decryption 
+
+algorithm.
+
+
+
+1. W^X: 
+
+NOTE: There are logical security flaws in this design fix later
 
 If not the author, once the executable finishes decrypting the source 
 
@@ -93,7 +111,7 @@ cryptosystem. Whatever editor the person is using will inevitably fail to write 
 
 NOTE ON SELF-REPLICATION:
 
-One may ask what is the entire purpose of the program, whether in binary or executable, to be self replicating. The answer is that any attempt to modify an encrypted file, even if reversedwith backspaces to look exactly like the original, will render the encrypted file UNENCRYPTABLE. Using editors like vim on an actual encrypted file will render the file impossible to decrypt using the encryption algorithm, even if the vim user reverse any attempt at modication and makes his reversed version look identical to the untampered version!
+One may ask what is the entire purpose of the program, whether in binary or executable, to be self replicating. To be clear, the program can self replicate all by itself, without reading any file. The answer is that any attempt to modify an encrypted file, even if reversed with backspaces to look exactly like the original, will render the encrypted file UNENCRYPTABLE. Using editors like vim on an actual encrypted file will render the file impossible to decrypt using the encryption algorithm, even if the vim user reverse any attempt at modication and makes his reversed version look identical to the untampered version!
 
 The self-replicating program can replicate either binary, the source, or both. Depending on write permissions.
 

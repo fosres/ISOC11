@@ -2,6 +2,7 @@
 static char arr[256];
 int main(void)
 {
+	printf("the car\n");
 	rsize_t i = 0;
 
 	rsize_t opening = 9;
@@ -23,6 +24,9 @@ int main(void)
 "",
 "int main(void)",
 "{",
+"putchar('p');putchar('r');putchar('i');putchar('n');putchar('t');putchar('f');putchar('(');",
+"	printf(the car\\n);",
+"	putchar(34);",
 "	rsize_t i = 0;",
 "",
 "	rsize_t opening = 9;",
@@ -85,7 +89,6 @@ NULL
 		putchar(10);
 		i++;
 	}
-	main();
 	return 0;
 
 

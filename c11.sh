@@ -97,9 +97,21 @@ if [ ! -f /usr/include/stddef.h ]; then
 
 	sed -i '$i  #ifndef __ptrdiff_t_defined' stddef.h
 
-	sed -i '$i  typedef signed int ptrdiff_t;' stddef.h
+	sed -i '$i  typedef signed long int ptrdiff_t;' stddef.h
 
 	sed -i '$i  #define __ptrdiff_t_defined 1' stddef.h
+
+	sed -i '$i  #endif' stddef.h
+
+	sed -i '$i  #ifndef __PTRDIFF_MIN__' stddef.h
+
+	sed -i '$i  #define __PTRDIFF_MIN__ -65535' stddef.h
+
+	sed -i '$i  #define #endif' stddef.h
+
+	sed -i '$i  #ifndef __PTRDIFF_MAX__' stddef.h
+
+	sed -i '$i  #define __PTRDIFF_MAX__ +65535' stddef.h
 
 	sed -i '$i  #endif' stddef.h
 fi

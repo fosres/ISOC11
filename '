@@ -1,30 +1,37 @@
 #include <stdio.h>
+rsize_t opening = 4; //opening quote starts at index 4
 static char *s = 
 
 "\
 #include <stdio.h> \n  \
-static char *s = \n \
-\" \
+rsize_t opening = 4;//opening quote starts at index 4
+static char *s = \n
 %c\n\
 %s\n\
 %c; \n  \
 			 \n  \
 int main()  \n  \
 {  \n  \
-	printf(\"\\\"the car\\n\\\"\");			 \n \	
-}\n\"\0";
+	printf(\"the car\\n\");			 \n \	
+	printf(s,34,s,34);  \n \
+}\n\0";
 int main()
 {
 	printf("the car\n");	
 	rsize_t i = 0;
-	rsize_t opening = 3;								
-	while ( s[i] != 0 )
+	rsize_t opening = 3;
+	while ( i <= opening )
 	{
 		putchar(s[i]);
 		i++;
 	}
-//	putchar(34); //print double quote
-	const rsize_t opening_quote = i;
+	printf(s,34,s,34); //delete this the loops below replace this
+
+	while ( i <= opening ) //print all lines up to opening double quote
+	{
+		putchar(s[i]);
+		i++;
+	}
 	i = 0;
 	while ( s[i] != 0 ) //now printing string in double quotes
 	{
@@ -40,12 +47,5 @@ int main()
 		}
 		i++;
 	}
-//	putchar(34); //print closing double quote
-	putchar(59); //print closing semicolon for global char array
-	i = opening+1;
-	while (s[i] != 0) // Now printing everything after opening quote
-	{
-		
-	}
-	return 0;
+	i = 
 }
