@@ -45,13 +45,14 @@ int main(int argc, char ** argv)
 	{
 		printf("0x%x, ",c);	
 	}
-	printf("}\n");
+	printf("0x0",stdout);
+	printf("};\n");
 
-// prints the contents of the source code in ASCII text
+// prints the contents of the source code in ASCII text:
 
 	rewind(in);
 
-	printf("Printing contents of source in ASCII text\n\n");
+	printf("Printing contents of source in ASCII text:\n\n");
 
 	while ( ( c = fgetc(in) ) != EOF )
 	{
