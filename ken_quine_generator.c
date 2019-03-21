@@ -1,4 +1,11 @@
 #if 0
+
+This program was inspired by Kenneth Lane Thompson's solution
+
+to designing a simple quine program:
+
+http://www.azillionmonkeys.com/qed/self3_c.txt
+
 To convert any non-quine program into a quine program, simply write:
 
 
