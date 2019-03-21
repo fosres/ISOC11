@@ -21,6 +21,8 @@ if ( ( target = fopen(name,"wb+") ) == NULL )
 {
 	
 	fprintf(stdout,"%d: Error! Can't open %s for rewriting!\n",name);
+
+	return 1;
 }
 
 
@@ -36,6 +38,14 @@ while ( *q_p != 0x0 )
 
 
 fprintf("%s\n",q,target_file.c);
+
+if ( fclose(target)  == EOF )
+{
+	fprintf(stdout,"Error! Failed to close %s!\n",name);
+
+	return 1;
+
+}
 
 RIGHT BEFORE:
 
