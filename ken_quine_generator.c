@@ -1,3 +1,27 @@
+#if 0
+To convert any non-quine program into a quine program, simply write:
+
+
+printf("%s\n",q);
+
+RIGHT BEFORE:
+
+return 0;
+
+which is at the end of the int main function.
+
+Finally, run:
+
+./ken_quine_generator.o file.c
+
+Expect the quine file to be stored in:
+
+file_quine.c
+
+in your current directory
+
+#endif
+
 static char t[]  =
 {0xD,0xF};
 #include <stdio.h>
