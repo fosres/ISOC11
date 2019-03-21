@@ -100,6 +100,10 @@ int main(int argc, char ** argv)
 	static char * str; 
 
 	static char * s_p;
+
+	static char * tf;
+
+	static char * tf_p;
 	
 	str = (char *)calloc(sizeof(char),SIZE);
 	
