@@ -1,8 +1,12 @@
+static char t[]  =
+{0xD,0xF};
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+
 int main(int argc, char ** argv)
 {
+	
 	
 	FILE * in = NULL;
 
@@ -54,6 +58,7 @@ int main(int argc, char ** argv)
 	printf("};\n\n");
 
 	s_p = &str[0];
+
 //actually printing the contents of the source code in hexadecimal from array
 
 	printf("printing the contents of the source code in hexadecimal from array\n\n");
@@ -80,7 +85,25 @@ int main(int argc, char ** argv)
 
 	s_p = &str[0];
 #endif
+
+//actually printing the contents of the source code in hexadecimal from array
+
+//	printf("printing the contents of the source code in hexadecimal from array\n\n");
+
+	
+	printf("static char q[] = \n{\n");
+	
+	while ( ( c = *s_p ) != 0x0 )
+	{ 	fprintf(stdout,"0x%x, ",c); s_p++;  }
+	
+	printf("0x0");
+	
+	printf("};\n\n");
+
+
 //	printf("Printing contents of source in ASCII text from array:\n\n");
+	
+	s_p = str;
 
 	while ( ( c = *s_p ) != 0x0 )
 	{
