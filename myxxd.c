@@ -15,6 +15,15 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 	
 	while ( ( c = fgetc(in) ) != EOF )
 	{
+		if ( isprint(c) )
+		{
+			(i%2 == 0) ? ( printf("%02x",c) ) : printf("%c%02x",0x9,c);
+		}
+		
+		else
+		{
+			(i%2 == 0) ? ( printf("%02x",0x2e) ) : printf("%c%02x",0x9,0x2e);
+		}
 		
 		if ( i%ARRSIZE != 0 && i != 0) 
 			
@@ -27,15 +36,6 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 			 printf("%s\n%08x:%c",ASCII,i,0x9); 
 			  
 			 memset_s(ASCII,ARRSIZE,0x0,16);
-		}
-
-		if ( isprint(c) )
-		{
-			(i%2 == 0) ? ( printf("%02x",c) ) : printf("%c%02x",0x9,c);
-		}
-		else
-		{
-			(i%2 == 0) ? ( printf("%02x",0x2e) ) : printf("%c%02x",0x9,0x2e);
 		}
 
 		i++;	
