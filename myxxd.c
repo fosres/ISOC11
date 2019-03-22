@@ -3,18 +3,20 @@
 #include <ctype.h>
 #include <string.h>
 
-#define ARRSIZE 17
+#define ARRSIZE 16
 
 void print_table(FILE * in,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 {
 	rsize_t i = 0;
 
 	unsigned char c = 0;
+
+	printf("%02x:%c",i,0x9);
 	
 	while ( ( c = fgetc(in) ) != EOF )
 	{
 		
-		if ( i%ARRSIZE != 0 ) 
+		if ( i%ARRSIZE != 0 && i != 0) 
 			
 		{ 
 			isprint(c) ? (ASCII[i%ARRSIZE] = c) : (ASCII[i%ARRSIZE] = 0x2e);
@@ -48,8 +50,6 @@ int main(int argc, char ** argv)
 
 	ascii_line[16] = 0x0;
 
-	static unsigned char * buf;
-
 	FILE * in = NULL;
 
 	if ( argc != 2 )
@@ -71,17 +71,8 @@ int main(int argc, char ** argv)
 	const rsize_t SIZE = ftell(in);
 
 	rewind(in);
+
+	print_table(in,ascii_line,SIZE);
 	
-
-	buf = (unsigned char *)calloc(SIZE+1,sizeof(char));
-
-	buf[SIZE] = 0x0;
-	
-	fread(buf,SIZE+1,sizeof(char),in);
-
-	print_table(buf,ascii_line,SIZE);
-	
-	free(buf);
-
 	return 0;
 }
