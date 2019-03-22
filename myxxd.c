@@ -13,11 +13,7 @@ int print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZ
 	while ( *s != 0x0 )
 	{
 		
-		if ( i%16 == 0  )
-		{
-			printf("%s\n%08x",ASCII,i);
-		}	
-		else if ( isprint(*s) != 0 )
+		if ( isprint(*s) != 0 )
 		{
 			(i%2 == 0) ? ( printf("%x",*s) ) : printf("%u%x",0x9,*s);
 		}
@@ -35,7 +31,13 @@ int print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZ
 			
 			: 
 				
-			( printf("%s\n%08x",ASCII,i), memset_s(ASCII,ASCII_SIZE,0x0,16) );
+			( 
+			 
+			 printf("%s\n%08x:%c",ASCII,i,0x9), 
+			  
+			 memset_s(ASCII,ASCII_SIZE,0x0,16) 
+			  
+			);
 		
 		s++;
 		i++;	
