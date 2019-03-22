@@ -24,7 +24,7 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 
 		else
 		{
-			 printf("%s\n%08x:",ASCII,i); 
+			 printf("%s\n%08x:%c",ASCII,i,0x9); 
 			  
 			 memset_s(ASCII,ARRSIZE,0x0,16);
 		}
