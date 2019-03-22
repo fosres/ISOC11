@@ -36,7 +36,6 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 			(i%2 == 0) ? ( printf("%02x",0x2e) ) : printf("%c%02x",0x9,0x2e);
 		}
 
-		s++;
 		i++;	
 	}
 
