@@ -5,18 +5,19 @@
 
 #define ARRSIZE 17
 
-void print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZE)
+void print_table(FILE * in,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 {
 	rsize_t i = 0;
 
+	unsigned char c = 0;
 	
-	while ( *s != 0x0 )
+	while ( ( c = fgetc(in) ) != EOF )
 	{
 		
 		if ( i%ARRSIZE != 0 ) 
 			
 		{ 
-			isprint(*s) ? (ASCII[i%ARRSIZE] = *s) : (ASCII[i%ARRSIZE] = 0x2e);
+			isprint(c) ? (ASCII[i%ARRSIZE] = c) : (ASCII[i%ARRSIZE] = 0x2e);
 		}
 
 		else
@@ -26,9 +27,9 @@ void print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SI
 			 memset_s(ASCII,ARRSIZE,0x0,16);
 		}
 
-		if ( isprint(*s) )
+		if ( isprint(c) )
 		{
-			(i%2 == 0) ? ( printf("%02x",*s) ) : printf("%c%02x",0x9,*s);
+			(i%2 == 0) ? ( printf("%02x",c) ) : printf("%c%02x",0x9,c);
 		}
 		else
 		{
