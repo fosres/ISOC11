@@ -18,7 +18,7 @@ int main(void)
 	while ( q[i] != 0x0 )
 	{ printf("0x%02x, ",q[i]); i++; }
 
-	printf("};\n");
+	printf("\n};\n");
 
 	printf("%s\n",q);
 	return 0;
