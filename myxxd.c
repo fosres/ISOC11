@@ -15,7 +15,7 @@ int print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZ
 		
 		if ( isprint(*s) != 0 )
 		{
-			(i%2 == 0) ? ( printf("%x",*s) ) : printf("%u%x",0x9,*s);
+			(i%2 == 0) ? ( printf("%x",*s) ) : printf("%c%x",0x9,*s);
 		}
 
 		else
@@ -23,7 +23,7 @@ int print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZ
 			
 		}
 
-		(i%16 != 0) 
+		(i%(16-1) != 0) 
 			
 			? 
 			
@@ -77,8 +77,6 @@ int main(int argc, char ** argv)
 	buf[SIZE] = 0x0;
 	
 	fread(buf,SIZE+1,sizeof(char),in);
-	
-	
 	
 	free(buf);
 
