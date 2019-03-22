@@ -1,44 +1,45 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
+
 static unsigned char ascii_line[17];
+
+ascii_line[16] = 0x0;
 
 static unsigned char * buf;
 
-int print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZE)
+void print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 {
-	rsize_t i = 0;	
+	rsize_t i = 0;
+
 	
 	while ( *s != 0x0 )
 	{
 		
-		if ( isprint(*s) != 0 )
-		{
-			(i%2 == 0) ? ( printf("%x",*s) ) : printf("%c%x",0x9,*s);
+		if ( i%SIZE != 0 ) 
+			
+		{ 
+			isprint(*s) ? (ASCII[i%SIZE] = *s) : (ASCII[i%SIZE] = 0x2e);
 		}
 
 		else
 		{
-			
+			 printf("%s\n%08x:",ASCII,i); 
+			  
+			 memset_s(ASCII,SIZE,0x0,16);
 		}
 
-		(i%(16-1) != 0) 
-			
-			? 
-			
-			( ASCII[i%16] = *s ) 
-			
-			: 
-				
-			( 
-			 
-			 printf("%s\n%08x:%c",ASCII,i,0x9), 
-			  
-			 memset_s(ASCII,ASCII_SIZE,0x0,16) 
-			  
-			);
-		
+		if ( isprint(*s) )
+		{
+			(i%2 == 0) ? ( printf("%02x",*s) ) : printf("%c%02x",0x9,*s);
+		}
+		else
+		{
+			(i%2 == 0) ? ( printf("%02x",0x2e) ) : printf("%c%02x",0x9,0x2e);
+		}
+
 		s++;
 		i++;	
 	}
@@ -47,18 +48,19 @@ int print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZ
 
 int main(int argc, char ** argv)
 {
+
 	FILE * in = NULL;
 
 	if ( argc != 2 )
 	{
-		fprintf("%d: Less than two arguments!\n",__LINE__,argv[1]);
+		fprintf(in,"%d: Less than two arguments!\n",__LINE__,argv[1]);
 
 		return 1;
 	}
 
 	if ( ( in = fopen(argv[1],"r") ) == NULL )
 	{
-		fprintf("%d: Failed to open %s!\n",__LINE__,argv[1]);
+		fprintf(in,"%d: Failed to open %s!\n",__LINE__,argv[1]);
 
 		return 1;
 	}
@@ -66,8 +68,6 @@ int main(int argc, char ** argv)
 	fseek(in,0L,SEEK_END);
 
 	const rsize_t SIZE = ftell(in);
-
-	fflush(in);
 
 	rewind(in);
 	
@@ -77,6 +77,8 @@ int main(int argc, char ** argv)
 	buf[SIZE] = 0x0;
 	
 	fread(buf,SIZE+1,sizeof(char),in);
+
+	print_table(buf,ascii_line,SIZE);
 	
 	free(buf);
 
