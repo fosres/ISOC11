@@ -3,12 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 
-
-static unsigned char ascii_line[17];
-
-ascii_line[16] = 0x0;
-
-static unsigned char * buf;
+#define ARRSIZE 17
 
 void print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SIZE)
 {
@@ -18,17 +13,17 @@ void print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SI
 	while ( *s != 0x0 )
 	{
 		
-		if ( i%SIZE != 0 ) 
+		if ( i%ARRSIZE != 0 ) 
 			
 		{ 
-			isprint(*s) ? (ASCII[i%SIZE] = *s) : (ASCII[i%SIZE] = 0x2e);
+			isprint(*s) ? (ASCII[i%ARRSIZE] = *s) : (ASCII[i%ARRSIZE] = 0x2e);
 		}
 
 		else
 		{
 			 printf("%s\n%08x:",ASCII,i); 
 			  
-			 memset_s(ASCII,SIZE,0x0,16);
+			 memset_s(ASCII,ARRSIZE,0x0,16);
 		}
 
 		if ( isprint(*s) )
@@ -48,6 +43,12 @@ void print_table(unsigned char * s,unsigned char ASCII[], const rsize_t ASCII_SI
 
 int main(int argc, char ** argv)
 {
+
+	static unsigned char ascii_line[17];
+
+	ascii_line[16] = 0x0;
+
+	static unsigned char * buf;
 
 	FILE * in = NULL;
 
