@@ -1,6 +1,6 @@
 
-#include <stdio.h>
-#include "src_code.h"
+//#include <stdio.h>
+//#include "src_code.h"
 
 int generate_target_file(char ** argv)
 {
