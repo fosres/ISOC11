@@ -22,6 +22,41 @@ Simple! :D
 //#define ARRSIZE_ORIGINAL 16
 const rsize_t ARRSIZE = 16;
 
+void reverse(unsigned char s[])
+{
+  for (int i = 0, j = strlen(s)-1; i < j; i++, j--)
+  {
+    char temp = s[i];
+
+    s[i] = s[j];
+
+    s[j] = temp;
+  }
+}
+
+unsigned char * print_binary(unsigned char input)
+{
+
+
+  static char s[10];
+
+  char * s_p = &s[0];
+
+  while (input > 0)
+  {
+    *s_p++ = (char)((input&1)+'0');
+
+    input >>= 1;
+  }
+
+  *s_p = '\0';
+  
+  reverse(s);
+
+  return s;
+
+}
+
 void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 {
 	rsize_t i = 0;
