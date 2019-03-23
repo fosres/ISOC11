@@ -20,7 +20,7 @@ ARRSIZE == Number of desired columns
 Simple! :D
 #endif
 //#define ARRSIZE_ORIGINAL 16
-#define ARRSIZE(x)  (x)
+const rsize_t ARRSIZE = 16;
 
 void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 {
@@ -67,7 +67,6 @@ argc-1, must have filename
 
 int main(int argc, char ** argv)
 {
-	ARRSIZE(16);
 
 	FILE * in = NULL;
 
