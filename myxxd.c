@@ -20,7 +20,7 @@ Simple! :D
 
 rsize_t NUM_HEX_ROWS = 16;
 
-rsize_t NUM_BIN_ROWS = 6;
+rsize_t NUM_BIN_ROWS = 5;
 
 void reverse(unsigned char s[])
 {
@@ -75,7 +75,7 @@ void print_bintable(FILE * in, unsigned char ASCII[],const rsize_t FILE_SIZE)
 
 		else
 		{
-			 printf("%s\n%08x:%c",ASCII,i,0x20); 
+			 printf("%s\n%08x:%c",ASCII,i,0x9); 
 
 			 memset_s(ASCII,NUM_BIN_ROWS,0x0,NUM_BIN_ROWS);
 		}
@@ -86,7 +86,7 @@ do not replace the actual hexadecimal with
 
 0x2e!
 #endif
-		printf("%08s%c",print_binary(c),0x20);
+		printf("%08s%c",print_binary(c),0x9);
 		
 
 		i++;	
