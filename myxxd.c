@@ -30,16 +30,14 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 			  
 			 //memset_s(ASCII,ARRSIZE,0x0,ARRSIZE);
 		}
+#if 0
+When printing the actual hexadecimal table, 
 
-		if ( isprint(c) )
-		{
+do not replace the actual hexadecimal with
+
+0x2e!
+#endif
 			(i%2 == 0) ? ( printf("%02x",c) ) : printf("%02x%c",c,0x9);
-		}
-		
-		else
-		{
-			(i%2 == 0) ? ( printf("%02x",0x2e) ) : printf("%02x%c",0x2e,0x9);
-		}
 		
 
 		i++;	
