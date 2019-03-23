@@ -1,4 +1,7 @@
-void print(x)
+#include <stdio.h>
+
+int main()
 {
-	printf("%d\n",EOF);
+	putchar(0x2e);
+	return 0;
 }
