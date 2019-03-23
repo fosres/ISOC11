@@ -2,25 +2,25 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
 #if 0
 
 Bug: Number of columns == Number of bytes per row!
 
-ARRSIZE == (desired number of columns)/2
+NUM_HEX_ROWS == (desired number of columns)/2
 
-default number of columns: 16 to make 16 bytes total per row
-
-for 8 columns
+default number of columns: 16 to make 16 bytes displayed in total per row
 
 So:
 
-ARRSIZE == Number of desired columns
+NUM_HEX_ROWS == Number of desired columns
 
 Simple! :D
 #endif
-//#define ARRSIZE_ORIGINAL 16
-const rsize_t ARRSIZE = 16;
+//#define NUM_HEX_ROWS_ORIGINAL 16
+
+rsize_t NUM_HEX_ROWS = 16;
+
+rsize_t NUM_BIN_ROWS = 6;
 
 void reverse(unsigned char s[])
 {
@@ -57,7 +57,7 @@ unsigned char * print_binary(unsigned char input)
 
 }
 
-void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
+void print_bintable(FILE * in, unsigned char ASCII[],const rsize_t FILE_SIZE)
 {
 	rsize_t i = 0;
 
@@ -67,17 +67,53 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 	{
 		c = fgetc(in);
 
-		if ( (i%ARRSIZE != 0) ) 
+		if ( (i%NUM_BIN_ROWS != 0) ) 
 			
 		{ 
-			isprint(c) ? (ASCII[i%ARRSIZE] = c) : (ASCII[i%ARRSIZE] = 0x2e);
+			isprint(c) ? (ASCII[i%NUM_BIN_ROWS] = c) : (ASCII[i%NUM_BIN_ROWS] = 0x2e);
+		}
+
+		else
+		{
+			 printf("%s\n%08x:%c",ASCII,i,0x20); 
+
+			 memset_s(ASCII,NUM_BIN_ROWS,0x0,NUM_BIN_ROWS);
+		}
+#if 0
+When printing the actual hexadecimal table, 
+
+do not replace the actual hexadecimal with
+
+0x2e!
+#endif
+		printf("%08s%c",print_binary(c),0x20);
+		
+
+		i++;	
+	}
+
+}
+void print_hextable(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
+{
+	rsize_t i = 0;
+
+	unsigned char c = 0;
+
+	while ( i < FILE_SIZE )
+	{
+		c = fgetc(in);
+
+		if ( (i%NUM_HEX_ROWS != 0) ) 
+			
+		{ 
+			isprint(c) ? (ASCII[i%NUM_HEX_ROWS] = c) : (ASCII[i%NUM_HEX_ROWS] = 0x2e);
 		}
 
 		else
 		{
 			 printf("%s\n%08x:%c",ASCII,i,0x9); 
 
-			 memset_s(ASCII,ARRSIZE,0x0,ARRSIZE);
+			 memset_s(ASCII,NUM_HEX_ROWS,0x0,NUM_HEX_ROWS);
 		}
 #if 0
 When printing the actual hexadecimal table, 
@@ -112,10 +148,14 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-
+	
 	if ( ( in = fopen(argv[argc-1],"r") ) == NULL )
 	{
-		fprintf(in,"%d: Failed to open %s!\n",__LINE__,argv[argc-1]);
+		fprintf(stderr,"\033[1;31m\n\0");	
+		
+		fprintf(stdout,"%d: Failed to open %s!\n",__LINE__,argv[argc-1]);
+
+		fprintf(stderr,"\033[0m\n\0");
 
 		return 1;
 	}
@@ -130,11 +170,72 @@ int main(int argc, char ** argv)
 
 	rewind(in);
 
-	print_table(in,ascii_line,SIZE);
+// insert while loop for command line arguments here
+	
+	while ( *++argv != NULL && **argv == 0x2d )
+	{
+		switch ( *++(*argv)  )
+		{
+			case 0x63:
+				{
+					// get column number
+
+					char const * column_num = *++argv; 
+
+					while ( isdigit( *(*argv) ) != 0 )
+					{	(*argv)++;	}
+
+					if ( **argv != 0x0 )
+					{
+						
+						fprintf(stderr,"\033[1;31m\n\0");	
+
+						fprintf(stderr,"%d: Error! Column"
+								" argument is not an" 
+								" integer!\n",
+						        __LINE__
+						       );
+
+						fprintf(stderr,"\033[0m\n\0");
+
+						return 1;
+					}
+
+
+
+					NUM_HEX_ROWS = (rsize_t)strtol(column_num,NULL,10);
+
+					NUM_BIN_ROWS = (rsize_t)strtol(column_num,NULL,10);
+
+					break;
+				}
+
+			case 0x62:
+				{
+					print_bintable(in,ascii_line,SIZE);
+					
+					return 0;
+				}
+
+
+
+			default:
+				{
+					break;
+				}
+		}	
+
+	}
+
+	print_hextable(in,ascii_line,SIZE);
 
 	if ( fclose(in) == EOF )
 	{
-		fprintf(stdout,"%d: Error! Failed to %s\n",__LINE__,argv[argc-1]);
+		fprintf(stderr,"\033[1;31m\n\0");	
+		
+		fprintf(stderr,"%d: Error! Failed to %s\n",__LINE__,argv[argc-1]);
+
+		fprintf(stderr,"\033[0m\n\0");
 		
 		return 1;
 	}
