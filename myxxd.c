@@ -3,7 +3,24 @@
 #include <ctype.h>
 #include <string.h>
 
-#define ARRSIZE 16
+#if 0
+
+Bug: Number of columns == Number of bytes per row!
+
+ARRSIZE == (desired number of columns)/2
+
+default number of columns: 16 to make 16 bytes total per row
+
+for 8 columns
+
+So:
+
+ARRSIZE == Number of desired columns
+
+Simple! :D
+#endif
+//#define ARRSIZE_ORIGINAL 16
+#define ARRSIZE 12
 
 void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 {
@@ -25,10 +42,7 @@ void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 		{
 			 printf("%s\n%08x:%c",ASCII,i,0x9); 
 
-			 for ( int j = 0; j < ARRSIZE; j++ )
-			 { ASCII[j] = 0; }
-			  
-			 //memset_s(ASCII,ARRSIZE,0x0,ARRSIZE);
+			 memset_s(ASCII,ARRSIZE,0x0,ARRSIZE);
 		}
 #if 0
 When printing the actual hexadecimal table, 
