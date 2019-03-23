@@ -20,7 +20,7 @@ ARRSIZE == Number of desired columns
 Simple! :D
 #endif
 //#define ARRSIZE_ORIGINAL 16
-#define ARRSIZE 12
+#define ARRSIZE(x)  (x)
 
 void print_table(FILE * in,unsigned char ASCII[], const rsize_t FILE_SIZE)
 {
@@ -59,21 +59,29 @@ do not replace the actual hexadecimal with
 
 }
 
+#if 0
+Last argument, argument index
+
+argc-1, must have filename
+#endif
+
 int main(int argc, char ** argv)
 {
+	ARRSIZE(16);
 
 	FILE * in = NULL;
 
-	if ( argc != 2 )
+	if ( argc < 2 )
 	{
-		fprintf(in,"%d: Less than two arguments!\n",__LINE__,argv[1]);
+		fprintf(in,"%d: Less than two arguments!\n",__LINE__);
 
 		return 1;
 	}
 
-	if ( ( in = fopen(argv[1],"r") ) == NULL )
+
+	if ( ( in = fopen(argv[argc-1],"r") ) == NULL )
 	{
-		fprintf(in,"%d: Failed to open %s!\n",__LINE__,argv[1]);
+		fprintf(in,"%d: Failed to open %s!\n",__LINE__,argv[argc-1]);
 
 		return 1;
 	}
@@ -92,7 +100,7 @@ int main(int argc, char ** argv)
 
 	if ( fclose(in) == EOF )
 	{
-		fprintf(stdout,"%d: Error! Failed to %s\n",__LINE__,argv[1]);
+		fprintf(stdout,"%d: Error! Failed to %s\n",__LINE__,argv[argc-1]);
 		
 		return 1;
 	}
